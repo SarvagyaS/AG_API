@@ -1,0 +1,97 @@
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\appsettings.Development.json
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\appsettings.json
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\AG.exe
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\obj\Debug\netcoreapp3.1\AG.csprojAssemblyReference.cache
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\obj\Debug\netcoreapp3.1\AG.AssemblyInfoInputs.cache
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\obj\Debug\netcoreapp3.1\AG.AssemblyInfo.cs
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\obj\Debug\netcoreapp3.1\AG.RazorTargetAssemblyInfo.cache
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\obj\Debug\netcoreapp3.1\staticwebassets\AG.StaticWebAssets.Manifest.cache
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\obj\Debug\netcoreapp3.1\staticwebassets\AG.StaticWebAssets.xml
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\Microsoft.Bcl.AsyncInterfaces.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\Microsoft.Bcl.HashCode.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Abstractions.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\obj\Debug\netcoreapp3.1\AG.csproj.CopyComplete
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\Microsoft.Data.SqlClient.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Relational.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.SqlServer.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\Microsoft.Identity.Client.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\System.Configuration.ConfigurationManager.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\System.Runtime.Caching.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\System.Security.Cryptography.ProtectedData.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\Microsoft.Data.SqlClient.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\Microsoft.Data.SqlClient.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\runtimes\win-arm64\native\sni.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\sni.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\sni.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\AG.deps.json
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\AG.runtimeconfig.json
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\AG.runtimeconfig.dev.json
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\AG.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\AG.pdb
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.JsonWebTokens.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Logging.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\obj\Debug\netcoreapp3.1\AG.csproj.CoreCompileInputs.cache
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\obj\Debug\netcoreapp3.1\AG.MvcApplicationPartsAssemblyInfo.cache
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\obj\Debug\netcoreapp3.1\AG.dll
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\obj\Debug\netcoreapp3.1\AG.pdb
+E:\01 Sarvagya Saxena\Dashboard\Prac\API\AG\AG\obj\Debug\netcoreapp3.1\AG.genruntimeconfig.cache
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\appsettings.Development.json
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\appsettings.json
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\AG.exe
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\AG.deps.json
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\AG.runtimeconfig.json
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\AG.runtimeconfig.dev.json
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\AG.dll
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\AG.pdb
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\Microsoft.Bcl.AsyncInterfaces.dll
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\Microsoft.Bcl.HashCode.dll
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\Microsoft.Data.SqlClient.dll
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.dll
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Abstractions.dll
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Relational.dll
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.SqlServer.dll
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\Microsoft.Identity.Client.dll
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.JsonWebTokens.dll
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Logging.dll
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.dll
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\System.Configuration.ConfigurationManager.dll
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\System.Runtime.Caching.dll
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\System.Security.Cryptography.ProtectedData.dll
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\Microsoft.Data.SqlClient.dll
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\Microsoft.Data.SqlClient.dll
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\runtimes\win-arm64\native\sni.dll
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\sni.dll
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\sni.dll
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.0\System.Runtime.Caching.dll
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
+E:\AG\API\AG\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+E:\AG\API\AG\obj\Debug\netcoreapp3.1\AG.csproj.AssemblyReference.cache
+E:\AG\API\AG\obj\Debug\netcoreapp3.1\AG.GeneratedMSBuildEditorConfig.editorconfig
+E:\AG\API\AG\obj\Debug\netcoreapp3.1\AG.AssemblyInfoInputs.cache
+E:\AG\API\AG\obj\Debug\netcoreapp3.1\AG.AssemblyInfo.cs
+E:\AG\API\AG\obj\Debug\netcoreapp3.1\AG.csproj.CoreCompileInputs.cache
+E:\AG\API\AG\obj\Debug\netcoreapp3.1\AG.MvcApplicationPartsAssemblyInfo.cache
+E:\AG\API\AG\obj\Debug\netcoreapp3.1\staticwebassets\AG.StaticWebAssets.Manifest.cache
+E:\AG\API\AG\obj\Debug\netcoreapp3.1\staticwebassets\AG.StaticWebAssets.xml
+E:\AG\API\AG\obj\Debug\netcoreapp3.1\scopedcss\bundle\AG.styles.css
+E:\AG\API\AG\obj\Debug\netcoreapp3.1\AG.RazorTargetAssemblyInfo.cache
+E:\AG\API\AG\obj\Debug\netcoreapp3.1\AG.csproj.CopyComplete
+E:\AG\API\AG\obj\Debug\netcoreapp3.1\AG.dll
+E:\AG\API\AG\obj\Debug\netcoreapp3.1\AG.pdb
+E:\AG\API\AG\obj\Debug\netcoreapp3.1\AG.genruntimeconfig.cache
