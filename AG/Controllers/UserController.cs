@@ -49,17 +49,24 @@ namespace AG.Controllers
         {
             try
             {
-                var user = await _AGContext.UserDetails.Where(a => a.email == u.Username && a.password == u.Password).FirstOrDefaultAsync();
+                var user = await _AGContext.UserDetails.Include(a=>a.UserAddressDetails).Where(a => a.email == u.Username && a.password == u.Password).FirstOrDefaultAsync();
                 if (user != null)
                 {
                     user.token = GenerateToken(user);
+                    if (user.UserAddressDetails != null)
+                    {
+                        foreach (var item in user.UserAddressDetails)
+                        {
+                            item.UserDetails = null;
+                        }
+                    }
                     return user;
                 }
                 return new UserDetails();
             }
             catch (Exception ex)
             {
-                return new UserDetails(); ;
+                return new UserDetails();
             }
         }
 
@@ -80,5 +87,41 @@ namespace AG.Controllers
             string strToKen = tokenHandler.WriteToken(Token);
             return strToKen;
         }
+
+        [HttpPost]
+        public async Task<UserAddressDetails> SaveAddressDetails([FromBody] UserAddressDetails u)
+        {
+            try
+            {
+                if (u.Id>0)
+                {
+                    var a = await _AGContext.UserAddressDetails.Where(a => a.Id == u.Id).FirstOrDefaultAsync();
+                    if (a!= null)
+                    {
+                        a.postal_code = u.postal_code;
+                        a.state = u.state;
+                        a.address_line_1 = u.address_line_1;
+                        a.address_line_2 = u.address_line_2;
+                        a.city = u.city;
+                        a.country = u.country;
+                        await _AGContext.SaveChangesAsync();
+                        return u;
+                    }
+                }
+                else
+                {
+                    u.created_date = DateTime.Now;
+                    _AGContext.Add(u);
+                    await _AGContext.SaveChangesAsync();
+                    return u;
+                }
+                return new UserAddressDetails();
+            }
+            catch (Exception ex)
+            {
+                return new UserAddressDetails();
+            }
+        }
+
     }
 }

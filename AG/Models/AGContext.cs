@@ -15,9 +15,11 @@ namespace AG.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserDetails>().ToTable("user_details");
+            modelBuilder.Entity<UserAddressDetails>().ToTable("user_address_details");
         }
 
         public DbSet<UserDetails> UserDetails { get; set; }
+        public DbSet<UserAddressDetails> UserAddressDetails { get; set; }
 
     }
 }

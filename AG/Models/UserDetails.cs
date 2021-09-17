@@ -8,9 +8,14 @@ namespace AG.Models
 {
     public class UserDetails
     {
+        public UserDetails()
+        {
+            UserAddressDetails = new List<UserAddressDetails>();
+        }
         public long Id { get; set; }
         public string first_name { get; set; }
         public string last_name { get; set; }
+        public string nick_name { get; set; }
         public string email { get; set; }
         public string country_code { get; set; }
         public string mobile { get; set; }
@@ -34,6 +39,8 @@ namespace AG.Models
 
         [NotMapped]
         public string token { get; set; }
+
+        public List<UserAddressDetails> UserAddressDetails { get; set; }
     }
 
     public  class Login
