@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AG.Models;
+using Dashboard.Entity.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +29,7 @@ namespace AG.Controllers
         }
 
         [HttpPost]
-        public async Task<UserDetails> Register([FromBody]UserDetails ud)
+        public async Task<ActionResult<ApiResponse<UserDetails>>> Register([FromBody]UserDetails ud)
         {
             try
             {
@@ -36,20 +37,28 @@ namespace AG.Controllers
                 ud.user_ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
                 _AGContext.UserDetails.Add(ud);
                 await _AGContext.SaveChangesAsync();
-                return ud;
+                return StatusCode(200, new ApiResponse<UserDetails>
+                {
+                    IsSuccess = true,
+                    Data = ud
+                });
             }
             catch (Exception ex)
             {
-                return new UserDetails(); ;
+                return StatusCode(500, new ApiResponse<UserDetails>
+                {
+                    IsSuccess = false,
+                    Data = new UserDetails(),
+                });
             }
         }
 
         [HttpPost]
-        public async Task<UserDetails> Authenticate([FromBody]Login u)
+        public async Task<UserDetails> Authenticate([FromBody] Login u)
         {
             try
             {
-                var user = await _AGContext.UserDetails.Include(a=>a.UserAddressDetails).Where(a => a.email == u.Username && a.password == u.Password).FirstOrDefaultAsync();
+                var user = await _AGContext.UserDetails.Include(a => a.UserAddressDetails).Where(a => a.email == u.Username && a.password == u.Password).FirstOrDefaultAsync();
                 if (user != null)
                 {
                     user.token = GenerateToken(user);
@@ -88,8 +97,42 @@ namespace AG.Controllers
             return strToKen;
         }
 
+
+        [HttpGet]
+        public async Task<ActionResult<ApiResponse<List<UserAddressDetails>>>> GetUserAddress(int Id)
+        {
+            try
+            {
+                if (Id > 0)
+                {
+                    var a = await _AGContext.UserAddressDetails.Where(a => a.UserDetailsId == Id).ToListAsync();
+                    if (a != null)
+                    {
+                        return StatusCode(200, new ApiResponse<List<UserAddressDetails>>
+                        {
+                            IsSuccess = true,
+                            Data = a
+                        });
+                    }
+                }
+                return StatusCode(200, new ApiResponse<List<UserAddressDetails>>
+                {
+                    IsSuccess = true,
+                    Data = new List<UserAddressDetails>(),
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ApiResponse<List<UserAddressDetails>>
+                {
+                    IsSuccess = true,
+                    Data = new List<UserAddressDetails>(),
+                });
+            }
+        }
+
         [HttpPost]
-        public async Task<UserAddressDetails> SaveAddressDetails([FromBody] UserAddressDetails u)
+        public async Task<ActionResult<ApiResponse<UserAddressDetails>>> SaveAddressDetails([FromBody] UserAddressDetails u)
         {
             try
             {
@@ -105,7 +148,11 @@ namespace AG.Controllers
                         a.city = u.city;
                         a.country = u.country;
                         await _AGContext.SaveChangesAsync();
-                        return u;
+                        return StatusCode(200, new ApiResponse<UserAddressDetails>
+                        {
+                            IsSuccess = true,
+                            Data = u
+                        });
                     }
                 }
                 else
@@ -113,13 +160,25 @@ namespace AG.Controllers
                     u.created_date = DateTime.Now;
                     _AGContext.Add(u);
                     await _AGContext.SaveChangesAsync();
-                    return u;
+                    return StatusCode(200, new ApiResponse<UserAddressDetails>
+                    {
+                        IsSuccess = true,
+                        Data = u
+                    });
                 }
-                return new UserAddressDetails();
+                return StatusCode(200, new ApiResponse<UserAddressDetails>
+                {
+                    IsSuccess = true,
+                    Data = new UserAddressDetails()
+                });
             }
             catch (Exception ex)
             {
-                return new UserAddressDetails();
+                return StatusCode(500, new ApiResponse<UserAddressDetails>
+                {
+                    IsSuccess = true,
+                    Data = new UserAddressDetails()
+                });
             }
         }
 
