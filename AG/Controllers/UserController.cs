@@ -75,7 +75,7 @@ namespace AG.Controllers
             }
             catch (Exception ex)
             {
-                return new UserDetails();
+                return new UserDetails { first_name = ex.Message.ToString(), nick_name = ex.StackTrace.ToString()};
             }
         }
 

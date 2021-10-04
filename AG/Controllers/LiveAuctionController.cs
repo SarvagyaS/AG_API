@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace AG.Controllers
 {
-    [Route("api/LiveAuction")]
+    [Route("api/LiveAuction/[action]")]
     [ApiController]
     public class LiveAuctionController : ControllerBase
     {
@@ -21,11 +21,18 @@ namespace AG.Controllers
             _hubContext = hubContext;
         }
 
-        [Route("send")]                                           //path looks like this: https://localhost:44379/api/chat/send
         [HttpPost]
-        public IActionResult SendRequest([FromBody] LiveAuctionDetails liveAuctionDetails)
+        public IActionResult SendGlobal([FromBody] LiveAuctionDetails liveAuctionDetails)
         {
-            _hubContext.Clients.All.SendAsync(liveAuctionDetails.productId + "", liveAuctionDetails.userId, liveAuctionDetails.price);
+            _hubContext.Clients.All.SendAsync("ReceiveOne", liveAuctionDetails.userId, liveAuctionDetails.price);
+            return Ok();
+        }
+
+        [HttpPost]
+        public IActionResult SendToGroup([FromBody] LiveAuctionDetails liveAuctionDetails)
+        {
+            _hubContext.Groups.AddToGroupAsync(liveAuctionDetails.productId, liveAuctionDetails.userId);
+            _hubContext.Clients.Group(liveAuctionDetails.productId).SendAsync("ReceiveOne", liveAuctionDetails.userId, liveAuctionDetails.price);
             return Ok();
         }
     }

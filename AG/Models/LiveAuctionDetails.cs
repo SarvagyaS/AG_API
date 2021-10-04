@@ -7,8 +7,8 @@ namespace AG.Models
 {
     public class LiveAuctionDetails
     {
-        public int productId { get; set; }
-        public int userId { get; set; }
+        public string productId { get; set; }
+        public string userId { get; set; }
         public string price { get; set; }
     }
 }

@@ -35,9 +35,12 @@ namespace AG
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
-                builder.AllowAnyOrigin()
+                builder
+                      .SetIsOriginAllowed(origin => true)
+                //.AllowAnyOrigin()
                        .AllowAnyMethod()
-                       .AllowAnyHeader();
+                       .AllowAnyHeader()
+                       .AllowCredentials();
             }));
 
             services.AddResponseCompression(options =>
