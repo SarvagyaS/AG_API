@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -9,6 +10,7 @@ using AG.Models;
 using Dashboard.Entity.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -21,15 +23,18 @@ namespace AG.Controllers
     {
         private readonly AGContext _AGContext;
         private readonly AppSettings _appSettings;
-
-        public UserController(AGContext aGContext, IOptions<AppSettings> appSettings)
+        private readonly AvigmaAGContext avigmaAGContext;
+        private readonly AvigmaBaseRepo avigmaBaseRepo;
+        public UserController(AGContext aGContext, IOptions<AppSettings> appSettings, AvigmaAGContext _avigmaAGContext)
         {
             _AGContext = aGContext;
             _appSettings = appSettings.Value;
+            avigmaAGContext = _avigmaAGContext;
+            avigmaBaseRepo = new AvigmaBaseRepo(_avigmaAGContext);
         }
 
         [HttpPost]
-        public async Task<ActionResult<ApiResponse<UserDetails>>> Register([FromBody]UserDetails ud)
+        public async Task<ActionResult<ApiResponse<UserDetails>>> Register([FromBody] UserDetails ud)
         {
             try
             {
@@ -37,6 +42,52 @@ namespace AG.Controllers
                 ud.user_ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
                 _AGContext.UserDetails.Add(ud);
                 await _AGContext.SaveChangesAsync();
+
+                IList<object> lstSqlParam = new List<object>
+            {
+                new SqlParameter("@UserID", null),
+                new SqlParameter("@ClientEmailID", ud.email),
+                new SqlParameter("@MaritalStatus", null),
+                new SqlParameter("@PanNo", ud.pan_card),
+                new SqlParameter("@DOB", ud.dob),
+                new SqlParameter("@AnniversaryDate", null),
+                new SqlParameter("@ID", ud.Id),
+                new SqlParameter("@ClientName", ud.first_name),
+                new SqlParameter("@MiddleName", null),
+                new SqlParameter("@LastName", ud.last_name),
+                new SqlParameter("@CompanyName", null),
+                new SqlParameter("@ProfileImage", null),
+                new SqlParameter("@TelephoneNumber", ud.mobile),
+                new SqlParameter("@MobileNumber", null),
+                new SqlParameter("@AddressLine1", null),
+                new SqlParameter("@AddressLine2", null),
+                new SqlParameter("@Landmark", null),
+                new SqlParameter("@Pincode", null),
+                new SqlParameter("@City", null),
+                new SqlParameter("@State", null),
+                new SqlParameter("@Country", null),
+                new SqlParameter("@ClientPriority", null),
+                new SqlParameter("@CurrencyID", Guid.NewGuid()+null),
+                new SqlParameter("@Gender", null),
+                new SqlParameter("@ApproveRejectStatus", null),
+                new SqlParameter("@ContactPersonName", null),
+                new SqlParameter("@ContactPersonNumber", null),
+                new SqlParameter("@ContactPersonEmailID", null),
+                new SqlParameter("@Designation", null),
+                new SqlParameter("@Total_Spend", Convert.ToDecimal(0)),
+                new SqlParameter("@Bid_Limit", Convert.ToDecimal(0)),
+                new SqlParameter("@Customer_profession", null),
+                new SqlParameter("@Company_profile", null),
+                new SqlParameter("@Client_background", false),
+                new SqlParameter("@Client_category_master", null),
+                new SqlParameter("@WebSiteId", 543),
+                new SqlParameter("@Type", 1),
+                new SqlParameter("@Id_Out", 0){ Direction = ParameterDirection.Output},
+                new SqlParameter("@ReturnValue", 0){ Direction = ParameterDirection.Output},
+                new SqlParameter("@ExecutionResult", 0){ Direction = ParameterDirection.Output},
+            };
+                var a = await avigmaBaseRepo.StoreProcedureAsync("InsertUpdateClientManagementData", lstSqlParam.ToArray());
+               
                 return StatusCode(200, new ApiResponse<UserDetails>
                 {
                     IsSuccess = true,
@@ -54,11 +105,96 @@ namespace AG.Controllers
         }
 
         [HttpPost]
+        public async Task<ActionResult<ApiResponse<UserDetails>>> SavePersonalDetails([FromBody] UserDetails ud)
+        {
+            try
+            {
+                var u = await _AGContext.UserDetails.FirstOrDefaultAsync(a => a.Id == ud.Id);
+                if (u != null)
+                {
+                    u.gender = ud.gender;
+                    u.dob = ud.dob;
+                    u.nick_name = ud.nick_name;
+                    u.country_code = ud.country_code;
+                    u.interested_in_bidding = ud.interested_in_bidding;
+                    u.hear_aboutus = ud.hear_aboutus;
+                    u.interested_in = ud.interested_in;
+                    u.birthDay = ud.birthDay;
+                    u.birthMonth = ud.birthMonth;
+                    u.birthYear = ud.birthYear;
+                    await _AGContext.SaveChangesAsync();
+                    return StatusCode(200, new ApiResponse<UserDetails>
+                    {
+                        IsSuccess = true,
+                        Data = ud
+                    });
+                }
+                else
+                {
+                    return StatusCode(200, new ApiResponse<UserDetails>
+                    {
+                        IsSuccess = false,
+                        Data = new UserDetails()
+                    });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ApiResponse<UserDetails>
+                {
+                    IsSuccess = false,
+                    Data = new UserDetails(),
+                });
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ApiResponse<UserDetails>>> SaveBankDetails([FromBody] UserDetails ud)
+        {
+            try
+            {
+                var u = await _AGContext.UserDetails.FirstOrDefaultAsync(a => a.Id == ud.Id);
+                if (u != null)
+                {
+                    u.bank_name = ud.bank_name;
+                    u.account_num = ud.account_num;
+                    u.ifsc_code = ud.ifsc_code;
+                    u.pan_card = ud.pan_card;
+                    u.aadhar_card = ud.aadhar_card;
+                    await _AGContext.SaveChangesAsync();
+                    return StatusCode(200, new ApiResponse<UserDetails>
+                    {
+                        IsSuccess = true,
+                        Data = ud
+                    });
+                }
+                else
+                {
+                    return StatusCode(200, new ApiResponse<UserDetails>
+                    {
+                        IsSuccess = false,
+                        Data = new UserDetails()
+                    });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ApiResponse<UserDetails>
+                {
+                    IsSuccess = false,
+                    Data = new UserDetails(),
+                });
+            }
+        }
+
+        [HttpPost]
         public async Task<UserDetails> Authenticate([FromBody] Login u)
         {
             try
             {
-                var user = await _AGContext.UserDetails.Include(a => a.UserAddressDetails).Where(a => a.email == u.Username && a.password == u.Password).FirstOrDefaultAsync();
+                var user = await _AGContext.UserDetails.Include(a => a.UserAddressDetails).Where(a => (a.first_name + " " + a.last_name) == u.Username && a.mobile == u.Password).FirstOrDefaultAsync();
                 if (user != null)
                 {
                     user.token = GenerateToken(user);
@@ -75,7 +211,7 @@ namespace AG.Controllers
             }
             catch (Exception ex)
             {
-                return new UserDetails { first_name = ex.Message.ToString(), nick_name = ex.StackTrace.ToString()};
+                return new UserDetails { first_name = ex.Message.ToString(), nick_name = ex.StackTrace.ToString() };
             }
         }
 
@@ -131,15 +267,49 @@ namespace AG.Controllers
             }
         }
 
+
+        [HttpGet]
+        public async Task<ActionResult<ApiResponse<UserDetails>>> GetUserDetails(int Id)
+        {
+            try
+            {
+                if (Id > 0)
+                {
+                    var a = await _AGContext.UserDetails.Where(a => a.Id == Id).FirstOrDefaultAsync();
+                    if (a != null)
+                    {
+                        return StatusCode(200, new ApiResponse<UserDetails>
+                        {
+                            IsSuccess = true,
+                            Data = a
+                        });
+                    }
+                }
+                return StatusCode(200, new ApiResponse<UserDetails>
+                {
+                    IsSuccess = true,
+                    Data = new UserDetails()
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ApiResponse<UserDetails>
+                {
+                    IsSuccess = true,
+                    Data = new UserDetails(),
+                });
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult<ApiResponse<UserAddressDetails>>> SaveAddressDetails([FromBody] UserAddressDetails u)
         {
             try
             {
-                if (u.Id>0)
+                if (u.Id > 0)
                 {
                     var a = await _AGContext.UserAddressDetails.Where(a => a.Id == u.Id).FirstOrDefaultAsync();
-                    if (a!= null)
+                    if (a != null)
                     {
                         a.postal_code = u.postal_code;
                         a.state = u.state;
@@ -147,6 +317,7 @@ namespace AG.Controllers
                         a.address_line_2 = u.address_line_2;
                         a.city = u.city;
                         a.country = u.country;
+                        a.name = u.name;
                         await _AGContext.SaveChangesAsync();
                         return StatusCode(200, new ApiResponse<UserAddressDetails>
                         {

@@ -21,5 +21,6 @@ namespace AG.Models
         public string city { get; set; }
         public DateTime? created_date { get; set; }
         public bool is_active { get; set; }
+        public int additionAddId { get; set; }
     }
 }

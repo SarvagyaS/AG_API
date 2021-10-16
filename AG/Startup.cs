@@ -58,6 +58,11 @@ namespace AG
                     options.UseSqlServer(Configuration.GetConnectionString("Development"));
                 });
 
+            services.AddDbContext<AvigmaAGContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("AvigmaDevelopment"));
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });

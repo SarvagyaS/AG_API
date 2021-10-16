@@ -35,7 +35,15 @@ namespace AG.Models
         public DateTime? registration_date { get; set; }
         public string user_ip { get; set; }
         public string user_agent { get; set; }
+        public string bank_name { get; set; }
+        public string account_num { get; set; }
+        public string ifsc_code { get; set; }
+        public string pan_card { get; set; }
+        public string aadhar_card { get; set; }
         public bool is_active { get; set; }
+        public int? birthDay { get; set; }
+        public int? birthMonth { get; set; }
+        public int? birthYear { get; set; }
 
         [NotMapped]
         public string token { get; set; }
