@@ -104,6 +104,7 @@ namespace AG.Controllers
             }
         }
 
+      
         [HttpPost]
         public async Task<ActionResult<ApiResponse<UserDetails>>> SavePersonalDetails([FromBody] UserDetails ud)
         {
@@ -149,6 +150,7 @@ namespace AG.Controllers
             }
         }
 
+        
         [HttpPost]
         public async Task<ActionResult<ApiResponse<UserDetails>>> SaveBankDetails([FromBody] UserDetails ud)
         {
@@ -189,12 +191,20 @@ namespace AG.Controllers
             }
         }
 
+        
         [HttpPost]
         public async Task<UserDetails> Authenticate([FromBody] Login u)
         {
             try
             {
-                var user = await _AGContext.UserDetails.Include(a => a.UserAddressDetails).Where(a => (a.first_name + " " + a.last_name) == u.Username && a.mobile == u.Password).FirstOrDefaultAsync();
+                var user = new UserDetails();
+                if (u.IsUserNameSelected)
+                {
+                    user = await _AGContext.UserDetails.Include(a => a.UserAddressDetails).Where(a => a.email == u.Username && a.password == u.Password).FirstOrDefaultAsync();
+                }
+                else{
+                    user = await _AGContext.UserDetails.Include(a => a.UserAddressDetails).Where(a => a.mobile == u.PhoneNo).FirstOrDefaultAsync();
+                }
                 if (user != null)
                 {
                     user.token = GenerateToken(user);
@@ -215,6 +225,7 @@ namespace AG.Controllers
             }
         }
 
+     
         private string GenerateToken(UserDetails userDetails, DateTime? dtExpiry = null)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -300,6 +311,7 @@ namespace AG.Controllers
                 });
             }
         }
+
 
         [HttpPost]
         public async Task<ActionResult<ApiResponse<UserAddressDetails>>> SaveAddressDetails([FromBody] UserAddressDetails u)
