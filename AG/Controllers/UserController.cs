@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Data;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AG.Models;
 using Dashboard.Entity.Common;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -25,8 +27,11 @@ namespace AG.Controllers
         private readonly AppSettings _appSettings;
         private readonly AvigmaAGContext avigmaAGContext;
         private readonly AvigmaBaseRepo avigmaBaseRepo;
-        public UserController(AGContext aGContext, IOptions<AppSettings> appSettings, AvigmaAGContext _avigmaAGContext)
+        private readonly IHostingEnvironment _hostingEnvironment;
+
+        public UserController(AGContext aGContext, IOptions<AppSettings> appSettings, AvigmaAGContext _avigmaAGContext, IHostingEnvironment hostingEnvironment)
         {
+            _hostingEnvironment = hostingEnvironment;
             _AGContext = aGContext;
             _appSettings = appSettings.Value;
             avigmaAGContext = _avigmaAGContext;
@@ -43,6 +48,8 @@ namespace AG.Controllers
                 _AGContext.UserDetails.Add(ud);
                 await _AGContext.SaveChangesAsync();
 
+                var postalAdd = ud.UserAddressDetails[0];
+
                 IList<object> lstSqlParam = new List<object>
             {
                 new SqlParameter("@UserID", null),
@@ -57,18 +64,18 @@ namespace AG.Controllers
                 new SqlParameter("@LastName", ud.last_name),
                 new SqlParameter("@CompanyName", null),
                 new SqlParameter("@ProfileImage", null),
-                new SqlParameter("@TelephoneNumber", ud.mobile),
-                new SqlParameter("@MobileNumber", null),
-                new SqlParameter("@AddressLine1", null),
-                new SqlParameter("@AddressLine2", null),
+                new SqlParameter("@TelephoneNumber", null),
+                new SqlParameter("@MobileNumber", ud.mobile),
+                new SqlParameter("@AddressLine1", postalAdd.address_line_1),
+                new SqlParameter("@AddressLine2", postalAdd.address_line_2),
                 new SqlParameter("@Landmark", null),
-                new SqlParameter("@Pincode", null),
-                new SqlParameter("@City", null),
-                new SqlParameter("@State", null),
-                new SqlParameter("@Country", null),
+                new SqlParameter("@Pincode", postalAdd.postal_code),
+                new SqlParameter("@City", postalAdd.city),
+                new SqlParameter("@State", postalAdd.state),
+                new SqlParameter("@Country", postalAdd.country),
                 new SqlParameter("@ClientPriority", null),
-                new SqlParameter("@CurrencyID", Guid.NewGuid()+null),
-                new SqlParameter("@Gender", null),
+                new SqlParameter("@CurrencyID", Guid.NewGuid()),
+                new SqlParameter("@Gender", ud.gender),
                 new SqlParameter("@ApproveRejectStatus", null),
                 new SqlParameter("@ContactPersonName", null),
                 new SqlParameter("@ContactPersonNumber", null),
@@ -80,19 +87,32 @@ namespace AG.Controllers
                 new SqlParameter("@Company_profile", null),
                 new SqlParameter("@Client_background", false),
                 new SqlParameter("@Client_category_master", null),
-                new SqlParameter("@WebSiteId", 543),
+                new SqlParameter("@WebSiteId", 420),
                 new SqlParameter("@Type", 1),
                 new SqlParameter("@Id_Out", 0){ Direction = ParameterDirection.Output},
                 new SqlParameter("@ReturnValue", 0){ Direction = ParameterDirection.Output},
                 new SqlParameter("@ExecutionResult", 0){ Direction = ParameterDirection.Output},
             };
+                //TEMP 
                 var a = await avigmaBaseRepo.StoreProcedureAsync("InsertUpdateClientManagementData", lstSqlParam.ToArray());
-               
-                return StatusCode(200, new ApiResponse<UserDetails>
+                ud.UserAddressDetails = new List<UserAddressDetails>();
+                if (a > 0)
                 {
-                    IsSuccess = true,
-                    Data = ud
-                });
+                    return StatusCode(200, new ApiResponse<UserDetails>
+                    {
+                        IsSuccess = true,
+                        Data = ud
+                    });
+                }
+                else
+                {
+                    return StatusCode(200, new ApiResponse<UserDetails>
+                    {
+                        IsSuccess = false,
+                        Errors = new List<Errors> { new Errors { Key = "", Value = "Not pushed to CRM" } }, 
+                        Data = ud
+                    });
+                }
             }
             catch (Exception ex)
             {
@@ -208,6 +228,10 @@ namespace AG.Controllers
                 if (user != null)
                 {
                     user.token = GenerateToken(user);
+                    var folderName = Path.Combine("wwwroot", "Upload", "ProfilePhoto");
+                    var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                    var a = user.profilePicUrl;
+                    user.profilePicUrl = pathToSave + "\\"  + a;
                     if (user.UserAddressDetails != null)
                     {
                         foreach (var item in user.UserAddressDetails)
@@ -289,6 +313,10 @@ namespace AG.Controllers
                     var a = await _AGContext.UserDetails.Where(a => a.Id == Id).FirstOrDefaultAsync();
                     if (a != null)
                     {
+                        var folderName = Path.Combine("wwwroot", "Upload", "ProfilePhoto");
+                        var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                        var d = a.profilePicUrl;
+                        a.profilePicUrl = pathToSave + "\\" + d;
                         return StatusCode(200, new ApiResponse<UserDetails>
                         {
                             IsSuccess = true,

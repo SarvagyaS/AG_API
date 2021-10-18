@@ -103,7 +103,9 @@ namespace AG.Models
 
 
 
-        public async Task<IDataReader> StoreProcedureAsync(string spName, params object[] parameters) 
+
+        // TO DO : to b made genric later
+        public async Task<int> StoreProcedureAsync(string spName, params object[] parameters) 
         {
             try
             {
@@ -113,11 +115,11 @@ namespace AG.Models
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddRange(parameters);
                 IDataReader dr = await cmd.ExecuteReaderAsync();
-                int contractID = Convert.ToInt32(cmd.Parameters["@Id_Out"].Value);
+                int id_out = Convert.ToInt32(cmd.Parameters["@Id_Out"].Value);
                 int rv = Convert.ToInt32(cmd.Parameters["@ReturnValue"].Value);
                 int er = Convert.ToInt32(cmd.Parameters["@ExecutionResult"].Value);
 
-                return dr;
+                return id_out;
             }
             catch (Exception ex)
             {

@@ -70,7 +70,7 @@ namespace AG
 
             services.AddControllers();
             services.AddSignalR();
-
+            services.AddHttpContextAccessor();
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
             var appSettings = appSettingsSection.Get<AppSettings>();

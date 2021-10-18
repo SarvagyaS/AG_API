@@ -44,6 +44,7 @@ namespace AG.Models
         public int? birthDay { get; set; }
         public int? birthMonth { get; set; }
         public int? birthYear { get; set; }
+        public string profilePicUrl { get; set; }
 
         [NotMapped]
         public string token { get; set; }
