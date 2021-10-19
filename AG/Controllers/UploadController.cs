@@ -26,6 +26,8 @@ namespace AG.Controllers
             _appSettings = appSettings.Value;
             _jwtHelpers = new JWTHelpers(httpContextAccessor, appSettings);
         }
+
+        [HttpPost]
         public ActionResult<ApiResponse<string>> UploadImage()
         {
             try
