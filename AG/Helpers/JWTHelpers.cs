@@ -22,7 +22,7 @@ namespace AG.Helpers
             _httpContextAccessor = httpContextAccessor;
             _appSettings = appSettings;
         }
-        
+
         private string GenerateToken(UserDetails userDetails, DateTime? dtExpiry = null)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

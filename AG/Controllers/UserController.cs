@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AG.Helpers;
 using AG.Models;
 using Dashboard.Entity.Common;
 using Microsoft.AspNetCore.Hosting;
@@ -109,7 +110,7 @@ namespace AG.Controllers
                     return StatusCode(200, new ApiResponse<UserDetails>
                     {
                         IsSuccess = false,
-                        Errors = new List<Errors> { new Errors { Key = "", Value = "Not pushed to CRM" } }, 
+                        Errors = new List<Errors> { new Errors { Key = "", Value = "Not pushed to CRM" } },
                         Data = ud
                     });
                 }
@@ -124,7 +125,7 @@ namespace AG.Controllers
             }
         }
 
-      
+
         [HttpPost]
         public async Task<ActionResult<ApiResponse<UserDetails>>> SavePersonalDetails([FromBody] UserDetails ud)
         {
@@ -170,7 +171,7 @@ namespace AG.Controllers
             }
         }
 
-        
+
         [HttpPost]
         public async Task<ActionResult<ApiResponse<UserDetails>>> SaveBankDetails([FromBody] UserDetails ud)
         {
@@ -211,7 +212,7 @@ namespace AG.Controllers
             }
         }
 
-        
+
         [HttpPost]
         public async Task<UserDetails> Authenticate([FromBody] Login u)
         {
@@ -222,23 +223,29 @@ namespace AG.Controllers
                 {
                     user = await _AGContext.UserDetails.Include(a => a.UserAddressDetails).Where(a => a.email == u.Username && a.password == u.Password).FirstOrDefaultAsync();
                 }
-                else{
+                else
+                {
                     user = await _AGContext.UserDetails.Include(a => a.UserAddressDetails).Where(a => a.mobile == u.PhoneNo).FirstOrDefaultAsync();
                 }
                 if (user != null)
                 {
+                    //the following lines of code is written for updating last login
+                    //user.last_login_date = DateTime.Now;
+                    //var loggedInUser = await _AGContext.UserDetails.AddAsync(user);
+                    //await _AGContext.SaveChangesAsync();
+
                     user.token = GenerateToken(user);
                     var folderName = Path.Combine("wwwroot", "Upload", "ProfilePhoto");
                     var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                     var a = user.profilePicUrl;
-                    user.profilePicUrl = pathToSave + "\\"  + a;
-                    if (user.UserAddressDetails != null)
-                    {
-                        foreach (var item in user.UserAddressDetails)
-                        {
-                            item.UserDetails = null;
-                        }
-                    }
+                    user.profilePicUrl = pathToSave + "\\" + a;
+                    //if (user.UserAddressDetails != null)
+                    //{
+                    //    foreach (var item in user.UserAddressDetails)
+                    //    {
+                    //        item.UserDetails = null;
+                    //    }
+                    //}
                     return user;
                 }
                 return new UserDetails();
@@ -249,7 +256,7 @@ namespace AG.Controllers
             }
         }
 
-     
+
         private string GenerateToken(UserDetails userDetails, DateTime? dtExpiry = null)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -393,5 +400,142 @@ namespace AG.Controllers
             }
         }
 
+        //added by PK
+        [HttpPost]
+        public async Task<ActionResult<ApiResponse<UserDetails>>> SaveEditUserProfile([FromBody] UserDetails userDetails)
+        {
+            try
+            {
+                int Type = 0;
+                if (userDetails.Id == 0)
+                {
+                    //create new user profile
+                    Type = 1;
+                    userDetails.registration_date = DateTime.Now;
+                    var newUserProfile = await _AGContext.UserDetails.AddAsync(userDetails);
+                    await _AGContext.SaveChangesAsync();
+                    userDetails.UserAddressDetails = new List<UserAddressDetails>();
+                    return StatusCode(200, new ApiResponse<UserDetails>
+                    {
+                        IsSuccess = true,
+                        Data = userDetails
+                    });
+                }
+                else
+                {
+                    Type = 2;
+                    //edit existing user profile
+                    var existingUserProfile = _AGContext.UserDetails.Where(x => x.Id == userDetails.Id).SingleOrDefault();
+                    if (existingUserProfile != null)
+                    {
+                        existingUserProfile.first_name = userDetails.first_name;
+                        existingUserProfile.last_name = userDetails.last_name;
+                        existingUserProfile.email = userDetails.email;
+                        existingUserProfile.password = userDetails.password;
+                        existingUserProfile.mobile = userDetails.mobile;
+                        existingUserProfile.dob = userDetails.dob;
+                        existingUserProfile.gender = userDetails.gender;
+                        existingUserProfile.country_code = userDetails.country_code;
+                        existingUserProfile.interested_in = userDetails.interested_in;
+                        existingUserProfile.interested_in_bidding = userDetails.interested_in_bidding;
+                        existingUserProfile.hear_aboutus = userDetails.hear_aboutus;
+                        existingUserProfile.pan_card = userDetails.pan_card;
+                        existingUserProfile.aadhar_card = userDetails.aadhar_card;
+                        existingUserProfile.account_num = userDetails.account_num;
+                        existingUserProfile.bank_name = userDetails.bank_name;
+                        existingUserProfile.ifsc_code = userDetails.ifsc_code;
+                        existingUserProfile.profilePicUrl = userDetails.profilePicUrl;
+                        existingUserProfile.profile_update_date = userDetails.profile_update_date;
+                        existingUserProfile.birthDay = userDetails.birthDay;
+                        existingUserProfile.birthMonth = userDetails.birthMonth;
+                        existingUserProfile.birthYear = userDetails.birthYear;
+                        existingUserProfile.profile_update_date = DateTime.Now;
+                        if (userDetails.UserAddressDetails != null)
+                        {
+                            existingUserProfile.UserAddressDetails = userDetails.UserAddressDetails;
+                        }
+                        _AGContext.Entry(existingUserProfile).State = EntityState.Modified;
+                        await _AGContext.SaveChangesAsync();
+                    }
+                    return StatusCode(200, new ApiResponse<UserDetails>
+                    {
+                        IsSuccess = true,
+                        Data = userDetails
+                    });
+                }
+                var postalAdd = userDetails.UserAddressDetails[0];
+                IList<object> lstSqlParam = new List<object>
+            {
+                new SqlParameter("@UserID", null),
+                new SqlParameter("@ClientEmailID", userDetails.email),
+                new SqlParameter("@MaritalStatus", null),
+                new SqlParameter("@PanNo", userDetails.pan_card),
+                new SqlParameter("@DOB", userDetails.dob),
+                new SqlParameter("@AnniversaryDate", null),
+                new SqlParameter("@ID", userDetails.Id),
+                new SqlParameter("@ClientName", userDetails.first_name),
+                new SqlParameter("@MiddleName", null),
+                new SqlParameter("@LastName", userDetails.last_name),
+                new SqlParameter("@CompanyName", null),
+                new SqlParameter("@ProfileImage", null),
+                new SqlParameter("@TelephoneNumber", null),
+                new SqlParameter("@MobileNumber", userDetails.mobile),
+                new SqlParameter("@AddressLine1", postalAdd.address_line_1),
+                new SqlParameter("@AddressLine2", postalAdd.address_line_2),
+                new SqlParameter("@Landmark", null),
+                new SqlParameter("@Pincode", postalAdd.postal_code),
+                new SqlParameter("@City", postalAdd.city),
+                new SqlParameter("@State", postalAdd.state),
+                new SqlParameter("@Country", postalAdd.country),
+                new SqlParameter("@ClientPriority", null),
+                new SqlParameter("@CurrencyID", Guid.NewGuid()),
+                new SqlParameter("@Gender", userDetails.gender),
+                new SqlParameter("@ApproveRejectStatus", null),
+                new SqlParameter("@ContactPersonName", null),
+                new SqlParameter("@ContactPersonNumber", null),
+                new SqlParameter("@ContactPersonEmailID", null),
+                new SqlParameter("@Designation", null),
+                new SqlParameter("@Total_Spend", Convert.ToDecimal(0)),
+                new SqlParameter("@Bid_Limit", Convert.ToDecimal(0)),
+                new SqlParameter("@Customer_profession", null),
+                new SqlParameter("@Company_profile", null),
+                new SqlParameter("@Client_background", false),
+                new SqlParameter("@Client_category_master", null),
+                new SqlParameter("@WebSiteId", 420),
+                new SqlParameter("@Type", Type),
+                new SqlParameter("@Id_Out", 0){ Direction = ParameterDirection.Output},
+                new SqlParameter("@ReturnValue", 0){ Direction = ParameterDirection.Output},
+                new SqlParameter("@ExecutionResult", 0){ Direction = ParameterDirection.Output},
+            };
+                //TEMP 
+                var a = await avigmaBaseRepo.StoreProcedureAsync("InsertUpdateClientManagementData", lstSqlParam.ToArray());
+                userDetails.UserAddressDetails = new List<UserAddressDetails>();
+                if (a > 0)
+                {
+                    return StatusCode(200, new ApiResponse<UserDetails>
+                    {
+                        IsSuccess = true,
+                        Data = userDetails
+                    });
+                }
+                else
+                {
+                    return StatusCode(200, new ApiResponse<UserDetails>
+                    {
+                        IsSuccess = false,
+                        Errors = new List<Errors> { new Errors { Key = "", Value = "Not pushed to CRM" } },
+                        Data = userDetails
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ApiResponse<UserDetails>
+                {
+                    IsSuccess = true,
+                    Data = new UserDetails()
+                });
+            }
+        }
     }
 }
