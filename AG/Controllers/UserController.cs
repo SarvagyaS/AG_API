@@ -239,13 +239,13 @@ namespace AG.Controllers
                     var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                     var a = user.profilePicUrl;
                     user.profilePicUrl = pathToSave + "\\" + a;
-                    //if (user.UserAddressDetails != null)
-                    //{
-                    //    foreach (var item in user.UserAddressDetails)
-                    //    {
-                    //        item.UserDetails = null;
-                    //    }
-                    //}
+                    if (user.UserAddressDetails != null)
+                    {
+                        foreach (var item in user.UserAddressDetails)
+                        {
+                            item.UserDetails = null;
+                        }
+                    }
                     return user;
                 }
                 return new UserDetails();
@@ -412,6 +412,7 @@ namespace AG.Controllers
                     //create new user profile
                     Type = 1;
                     userDetails.registration_date = DateTime.Now;
+                    userDetails.user_ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
                     var newUserProfile = await _AGContext.UserDetails.AddAsync(userDetails);
                     await _AGContext.SaveChangesAsync();
                     userDetails.UserAddressDetails = new List<UserAddressDetails>();
@@ -425,7 +426,7 @@ namespace AG.Controllers
                 {
                     Type = 2;
                     //edit existing user profile
-                    var existingUserProfile = _AGContext.UserDetails.Where(x => x.Id == userDetails.Id).SingleOrDefault();
+                    var existingUserProfile = _AGContext.UserDetails.Include(a => a.UserAddressDetails).Where(x => x.Id == userDetails.Id).SingleOrDefault();
                     if (existingUserProfile != null)
                     {
                         existingUserProfile.first_name = userDetails.first_name;
@@ -450,6 +451,7 @@ namespace AG.Controllers
                         existingUserProfile.birthMonth = userDetails.birthMonth;
                         existingUserProfile.birthYear = userDetails.birthYear;
                         existingUserProfile.profile_update_date = DateTime.Now;
+                        existingUserProfile.user_ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
                         if (userDetails.UserAddressDetails != null)
                         {
                             existingUserProfile.UserAddressDetails = userDetails.UserAddressDetails;
@@ -463,7 +465,7 @@ namespace AG.Controllers
                         Data = userDetails
                     });
                 }
-                var postalAdd = userDetails.UserAddressDetails[0];
+                UserAddressDetails postalAdd = userDetails.UserAddressDetails[0];
                 IList<object> lstSqlParam = new List<object>
             {
                 new SqlParameter("@UserID", null),

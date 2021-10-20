@@ -68,7 +68,8 @@ namespace AG
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
             });
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(x =>
+ x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddSignalR();
             services.AddHttpContextAccessor();
             var appSettingsSection = Configuration.GetSection("AppSettings");
