@@ -452,11 +452,34 @@ namespace AG.Controllers
                         existingUserProfile.birthYear = userDetails.birthYear;
                         existingUserProfile.profile_update_date = DateTime.Now;
                         existingUserProfile.user_ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+                        await _AGContext.SaveChangesAsync();
+
                         if (userDetails.UserAddressDetails != null)
                         {
                             existingUserProfile.UserAddressDetails = userDetails.UserAddressDetails;
                         }
-                        _AGContext.Entry(existingUserProfile).State = EntityState.Modified;
+
+                        if (userDetails.UserAddressDetails != null)
+                        {
+                            var newAdd = userDetails.UserAddressDetails.Where(a => a.Id == 0).ToList();
+                            foreach (var item in newAdd)
+                            {
+                                item.UserDetailsId = userDetails.Id;
+                            }
+                            await _AGContext.UserAddressDetails.AddRangeAsync(newAdd);
+                            await _AGContext.SaveChangesAsync();
+
+                            var editAdd = userDetails.UserAddressDetails.Where(a => a.Id != 0).ToList();
+                            foreach (var item in editAdd)
+                            {
+                                var obj = await _AGContext.UserAddressDetails.FirstOrDefaultAsync(a => a.Id == item.Id);
+                                _AGContext.Entry(obj).CurrentValues.SetValues(item);
+                                await _AGContext.SaveChangesAsync();
+                            }
+
+                        }
+                        //_AGContext.Entry(existingUserProfile).CurrentValues.SetValues(userDetails);
+                        //_AGContext.Entry(existingUserProfile).State = EntityState.Modified;
                         await _AGContext.SaveChangesAsync();
                     }
                     return StatusCode(200, new ApiResponse<UserDetails>
@@ -534,10 +557,10 @@ namespace AG.Controllers
             {
                 return StatusCode(500, new ApiResponse<UserDetails>
                 {
-                    IsSuccess = true,
+                    IsSuccess = false,
                     Data = new UserDetails()
                 });
             }
         }
     }
-}
+    }
