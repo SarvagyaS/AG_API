@@ -454,10 +454,10 @@ namespace AG.Controllers
                         existingUserProfile.user_ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
                         await _AGContext.SaveChangesAsync();
 
-                        if (userDetails.UserAddressDetails != null)
-                        {
-                            existingUserProfile.UserAddressDetails = userDetails.UserAddressDetails;
-                        }
+                        //if (userDetails.UserAddressDetails != null)
+                        //{
+                        //    existingUserProfile.UserAddressDetails = userDetails.UserAddressDetails;
+                        //}
 
                         if (userDetails.UserAddressDetails != null)
                         {
@@ -466,8 +466,11 @@ namespace AG.Controllers
                             {
                                 item.UserDetailsId = userDetails.Id;
                             }
-                            await _AGContext.UserAddressDetails.AddRangeAsync(newAdd);
-                            await _AGContext.SaveChangesAsync();
+                            if (newAdd != null && newAdd.Any())
+                            {
+                                await _AGContext.UserAddressDetails.AddRangeAsync(newAdd);
+                                await _AGContext.SaveChangesAsync();
+                            }
 
                             var editAdd = userDetails.UserAddressDetails.Where(a => a.Id != 0).ToList();
                             foreach (var item in editAdd)
@@ -480,7 +483,6 @@ namespace AG.Controllers
                         }
                         //_AGContext.Entry(existingUserProfile).CurrentValues.SetValues(userDetails);
                         //_AGContext.Entry(existingUserProfile).State = EntityState.Modified;
-                        await _AGContext.SaveChangesAsync();
                     }
                     return StatusCode(200, new ApiResponse<UserDetails>
                     {
