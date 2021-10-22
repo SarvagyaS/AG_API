@@ -63,11 +63,11 @@ namespace AG.Controllers
                 }
                 #endregion
 
-
+                var tempFolderName = Path.Combine("Upload", "ProfilePhoto");
                 return StatusCode(200, new ApiResponse<string>
                 {
                     IsSuccess = true,
-                    Data = fileName
+                    Data = tempFolderName + "\\"+ fileName
                 });
             }
             catch (Exception ex)
