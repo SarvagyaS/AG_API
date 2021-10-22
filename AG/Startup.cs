@@ -121,6 +121,8 @@ namespace AG
                 endpoints.MapControllers();
                 endpoints.MapHub<LiveAuctionHub>("/LiveAuctionSocket");
             });
+
+            app.UseStaticFiles();
         }
     }
 }

@@ -320,10 +320,9 @@ namespace AG.Controllers
                     var a = await _AGContext.UserDetails.Where(a => a.Id == Id).FirstOrDefaultAsync();
                     if (a != null)
                     {
-                        var folderName = Path.Combine("wwwroot", "Upload", "ProfilePhoto");
-                        var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                        var folderName = Path.Combine("Upload", "ProfilePhoto");
                         var d = a.profilePicUrl;
-                        a.profilePicUrl = pathToSave + "\\" + d;
+                        a.profilePicUrl = folderName + "/" + d;
                         return StatusCode(200, new ApiResponse<UserDetails>
                         {
                             IsSuccess = true,
