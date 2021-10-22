@@ -411,6 +411,24 @@ namespace AG.Controllers
                 {
                     //create new user profile
                     Type = 1;
+                    if (await _AGContext.UserDetails.FirstOrDefaultAsync(c=>c.email == userDetails.email) != null)
+                    {
+                        return StatusCode(200, new ApiResponse<UserDetails>
+                        {
+                            IsSuccess = false,
+                            Data = new UserDetails(),
+                            Errors = new List<Errors> { new Errors { Key="Email",Value="EMail Already exists." } }
+                        }) ;
+                    }
+                    if (await _AGContext.UserDetails.FirstOrDefaultAsync(c => c.mobile == userDetails.mobile) != null)
+                    {
+                        return StatusCode(200, new ApiResponse<UserDetails>
+                        {
+                            IsSuccess = false,
+                            Data = new UserDetails(),
+                            Errors = new List<Errors> { new Errors { Key = "Mobile", Value = "Mobile Already exists." } }
+                        });
+                    }
                     userDetails.registration_date = DateTime.Now;
                     userDetails.user_ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
                     var newUserProfile = await _AGContext.UserDetails.AddAsync(userDetails);
